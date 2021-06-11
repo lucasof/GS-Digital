@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+   
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="content">
+		<p:messages id="message"><p:autoUpdate /></p:messages>
+
+		<h:form>
+			<p:card class="card-form">
+			    <f:facet name="title">
+			        Novo Cliente
+			    </f:facet>
+			   
+			   
+					<h:panelGrid columns="2">
+						<p:outputLabel for="nome" value="Nome"/>
+						<p:inputText id="nome" value="#{clienteBean.cliente.nome}" required="true">
+							<f:ajax event="blur" render="message"/>
+						
+						</p:inputText>
+												
+						<p:outputLabel for="documento" value="Documento"/>
+						<p:inputText id="documento" value="#{clienteBean.cliente.documento}" validatorMessage="O campo deve ter pelo menos 10 caracteres" >
+							<f:validateLength minimum="10" maximum="45" />
+							<f:ajax event="blur" render="message"/>
+						</p:inputText>
+						
+						<p:outputLabel for="paisOrigem" value="PaisOrigem"/>
+						<p:inputText id="paisOrigem" value="#{clienteBean.cliente.paisOrigem}" validatorMessage="O campo deve ter pelo menos 5 caracteres">
+							<f:validateLength minimum="5" maximum="85" />
+							<f:ajax event="blur" render="message"/>
+							
+						</p:inputText>
+						
+						<p:outputLabel for="email" value="Email"/>
+						<p:inputText id="email" value="#{clienteBean.cliente.email}" validatorMessage="O e-mail é inválido">
+						    <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+							<f:ajax event="blur" render="message"/>
+							
+						</p:inputText>
+					</h:panelGrid>
+				
+				
+			    <f:facet name="footer">
+			        <p:commandButton icon="pi pi-check" value="Save" action="#{clienteBean.save}" update="clientes">
+			        	<p:ajax execute="@form" resetValues="true"/>
+			        </p:commandButton>
+			        <p:commandButton icon="pi pi-times" value="Cancel" styleClass="ui-button-secondary" style="margin-left: .5em"/>
+			    </f:facet>
+			</p:card>
+			
+			<div class="card" >
+		        <p:dataTable id="clientes" value="#{clienteBean.clientes}" var="cliente">
+		            <p:column headerText="Name">
+		                <h:outputText value="#{cliente.nome}" />
+		            </p:column>
+		
+		            <p:column headerText="Email">
+		                <h:outputText value="#{cliente.email}" />
+		            </p:column>
+		            <p:column headerText="Email">
+		                <h:outputText value="#{cliente.documento}" />
+		            </p:column>
+		            <p:column headerText="Deletar">
+    					<p:commandButton value="Deletar" styleClass="ui-button-danger" action="#{clienteBean.delete(cliente.id)}" update="clientes"/>
+		            </p:column>
+		        </p:dataTable>
+		    </div>
+		</h:form>
+		
+	</ui:define>
+		
+</ui:composition>
+</html>
